@@ -1,0 +1,16 @@
+# Parameters related to building rocALUTION
+ARG base_image
+
+FROM ${base_image}
+MAINTAINER Nico Trost
+
+# Copy the debian package of rocalution into the container from host
+COPY *.deb /tmp/
+
+# Install the debian package
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends --allow-unauthenticated -y \
+    /tmp/rocsparse-*.deb \
+    /tmp/rocalution-*.deb \
+  && rm -f /tmp/*.deb \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
